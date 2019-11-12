@@ -28,7 +28,7 @@ python3 -m venv .venv
 cd .venv/Scripts
 activate
 pip install insta_hashtag_crawler
-
+```
 #### via `setup.py`
 ```shell
 git clone https://gitlab.com/point1304/insta_hashtag_crawler.git
@@ -51,7 +51,7 @@ This command will generates a series of `csv` formatted data in your
 `csv` file name will be: __${hashtag}_yyyymmdd_(${number}).csv__
 
 ## Optional Arguments
-* __[--dir] [-d]__
+* __[--dir] [-d]__  
 You can set the directory where crawling results will be generated  
 by using [--dir] [-d] option.  
 The [--dir] options can take an absolute or relative path as an argument.
@@ -60,7 +60,7 @@ insta-crawl --dir /some/path/to/dir hashtag
 insta-crawl --dir some/relative/path hashtag
 ```
 
-* __[--quiet] [-q]__ 
+* __[--quiet] [-q]__  
 Turn on the [--quiet] [-q] flag if you want to mute the crawling logs,  
 which by default are directed to the `stdout`.
 This option will redirect any logs to OS-relevant `dev/null`.
