@@ -25,13 +25,7 @@ class Crawler(object):
         self._TAG_ENDPOINT = self.ENDPOINT_ROOT % ('tags', '%s')
         self._POST_ENDPOINT = self.ENDPOINT_ROOT % ('p', '%s')
         self._end_cursor = gevent.queue.Queue()
-        self._f = open(
-            self._get_csv_path(),
-            'a+',
-            encoding='utf8'
-        )
-        self._set_csv_writer()
-
+        self._csv_path = None
 
     def _set_csv_writer(self):
         self._csv_writer = csv.DictWriter(
@@ -40,9 +34,14 @@ class Crawler(object):
         )
         self._csv_writer.writeheader()
 
+    def set_csv_path(self, path):
+        if not os.path.abspath(path):
+            raise ValueError('`path` argument must be an absolute path')
+        self._csv_path = path
+
     def _get_csv_path(self, nth=None):
         path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
+            os.getcwd() if self._csv_path is None else self._csv_path,
             self._tagnames[0] + '_' + datetime.now().strftime('%Y%m%d')
         )
         nth = nth if nth is not None else 0
@@ -75,6 +74,13 @@ class Crawler(object):
             self._queue.put(endpoint)
 
     def crawl(self):
+        self._f = open(
+            self._get_csv_path(),
+            'a+',
+            encoding='utf8'
+        )
+        self._set_csv_writer()
+
         for tagname in self._tagnames:
             self._q_put(
                 self._get_tag_endpoint(tagname)
@@ -86,7 +92,6 @@ class Crawler(object):
             for i in range(0, min(self._queue.qsize(), self._pool.free_count())):
                 self._pool.spawn(self._crawl)
 
-        print('called join')
         self._pool.join()
 
     def _crawl(self):
@@ -187,12 +192,3 @@ class Crawler(object):
 
     def __del__(self):
         self._f.close()
-
-if __name__ == '__main__':
-    c = Crawler('연착')
-    try:
-        c.crawl()
-    except KeyboardInterrupt:
-        c.stop()
-        print('closing crawler...')
-        print('total fetched posts: %d' % c._crawled)
