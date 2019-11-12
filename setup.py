@@ -21,7 +21,7 @@ setuptools.setup(
     python_requires='>=3.6',
     entry_points={
         'console_scripts': [
-            'insta-crawl = insta_crawler.command:crawl'
+            'insta-crawl = insta_hashtag_crawler.command:crawl'
         ]
     }
 )
