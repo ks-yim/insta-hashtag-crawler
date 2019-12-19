@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='insta_hashtag_crawler',
-    version='0.0.2',
+    version='0.0.3',
     author='Gyeongsu Yim',
     author_email='point1304@gmail.com',
     description='A gevent-based simple instagram hashtag crawler',
