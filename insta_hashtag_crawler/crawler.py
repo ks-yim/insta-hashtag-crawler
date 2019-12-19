@@ -77,7 +77,8 @@ class Crawler(object):
         self._f = open(
             self._get_csv_path(),
             'a+',
-            encoding='utf8'
+            encoding='euc-kr',
+            newline=''
         )
         self._set_csv_writer()
 
@@ -174,15 +175,15 @@ class Crawler(object):
 
         if self._crawled % 500 == 0:
             self._f.close()
-            self._f = open(self._get_csv_path(nth=self._crawled // 500), 'a+', encoding='utf8')
+            self._f = open(self._get_csv_path(nth=self._crawled // 500), 'a+', encoding='euc-kr', newline='')
             self._set_csv_writer()
 
         self._csv_writer.writerow({
             'id': self._crawled,
-            'tag': endpoint.tagname,
-            'shortcode': shortcode,
-            'username': username,
-            'text': text,
+            'tag': endpoint.tagname.encode('euc-kr', 'ignore').decode('euc-kr'),
+            'shortcode': shortcode.encode('euc-kr', 'ignore').decode('euc-kr'),
+            'username': username.encode('euc-kr', 'ignore').decode('euc-kr'),
+            'text': text.encode('euc-kr', 'ignore').decode('euc-kr'),
             'taken_at': str(datetime.fromtimestamp(taken_at_ts))
         })
 
